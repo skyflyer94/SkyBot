@@ -28,7 +28,8 @@
                 await context.Forward(new SupportDialog(), this.ResumeAfterSupportDialog, message, CancellationToken.None);
             }
             else if (message.Text.ToLower().Contains("qna")){
-                await context.Forward(new QnADialog(), this.AfterQnADialog, message, CancellationToken.None);
+                await context.PostAsync($"Hi, Feel free to ask a question!");
+                context.Call(new QnADialog(), this.AfterQnADialog);
             }
             else{
                 this.ShowOptions(context);
@@ -75,7 +76,7 @@
 
         private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)
         {
-            await context.PostAsync($"Other Questions?");
+            await context.PostAsync($"Enter qna again if you want to enter FAQ");
             context.Wait(this.MessageReceivedAsync);
         }
 

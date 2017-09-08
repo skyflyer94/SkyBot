@@ -21,8 +21,15 @@ namespace MultiDialogsBot.Dialogs
 
         public override async Task NoMatchHandler(IDialogContext context, string originalQueryText)
         {
-            await context.PostAsync($"Sorry, I couldn't find an answer for '{originalQueryText}'.");
-            context.Wait(MessageReceived);
+            if (originalQueryText.ToLower().Contains("back"))
+            {
+                context.Fail(new FormCanceledException("exit from faq", null));
+            }
+            else
+            {
+                await context.PostAsync($"Sorry, I couldn't find an answer for '{originalQueryText}'.");
+                context.Wait(MessageReceived);
+            }
         }
 
         [QnAMakerResponseHandler(50)]
