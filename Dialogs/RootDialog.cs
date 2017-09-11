@@ -6,16 +6,17 @@
     using System.Threading.Tasks;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
+    using System.Linq;
 
     [Serializable]
     public class RootDialog : IDialog<object>
     {
-        private const string FlightsOption = "Flights";
 
-        private const string HotelsOption = "Hotels";
+        private enum OptionList { Flights = 1, Hotels, FAQ };
 
         public async Task StartAsync(IDialogContext context)
         {
+            await context.PostAsync($"Hi!");
             context.Wait(this.MessageReceivedAsync);
         }
 
@@ -28,17 +29,17 @@
                 await context.Forward(new SupportDialog(), this.ResumeAfterSupportDialog, message, CancellationToken.None);
             }
             else if (message.Text.ToLower().Contains("qna")){
-                await context.PostAsync($"Hi, Feel free to ask a question!");
+                await context.PostAsync($"Hi, feel free to ask a question =)");
                 context.Call(new QnADialog(), this.AfterQnADialog);
             }
             else{
                 this.ShowOptions(context);
             }
         }
-
+            
         private void ShowOptions(IDialogContext context)
         {
-            PromptDialog.Choice(context, this.OnOptionSelected, new List<string>() { FlightsOption, HotelsOption }, "Are you looking for a flight or a hotel?", "Not a valid option", 3);
+            PromptDialog.Choice(context, this.OnOptionSelected, Enum.GetNames(typeof(OptionList)).ToList(), "Are you looking for a flight or a hotel?", "Not a valid option", 3);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> result)
@@ -46,15 +47,23 @@
             try
             {
                 string optionSelected = await result;
-
-                switch (optionSelected)
+                OptionList opt;
+                Enum.TryParse(optionSelected, out opt);
+                switch (opt)
                 {
-                    case FlightsOption:
+                    case OptionList.Flights:
                         context.Call(new FlightsDialog(), this.ResumeAfterOptionDialog);
                         break;
 
-                    case HotelsOption:
+                    case OptionList.Hotels:
                         context.Call(new HotelsDialog(), this.ResumeAfterOptionDialog);
+                        break;
+                    case OptionList.FAQ:
+                        await context.PostAsync($"Hi, Feel free to ask a question!");
+                        context.Call(new QnADialog(), this.AfterQnADialog);
+                        break;
+                    default:
+
                         break;
                 }
             }
