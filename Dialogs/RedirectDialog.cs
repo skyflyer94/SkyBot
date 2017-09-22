@@ -40,12 +40,12 @@
                 {
                     case OptionList.Space:
                         await context.PostAsync($"Ask a Question =)");
-                        context.Call(new QnADialog("103b9ce0-a863-4112-8c38-25d35f900148", "69e1cbed729b4fa8ac00cf5bd5570381"), this.ResumeAfterOptionDialog);
+                        context.Call(new QnADialog("Space","103b9ce0-a863-4112-8c38-25d35f900148", "69e1cbed729b4fa8ac00cf5bd5570381"), this.ResumeAfterOptionDialog);
                         break;
 
                     case OptionList.Appshare:
                         await context.PostAsync($"Ask a Question =)");
-                        context.Call(new QnADialog("1f539b39-c180-491a-a407-ff9a7303529e", "69e1cbed729b4fa8ac00cf5bd5570381"), this.ResumeAfterOptionDialog);
+                        context.Call(new QnADialog("Appshare","1f539b39-c180-491a-a407-ff9a7303529e", "69e1cbed729b4fa8ac00cf5bd5570381"), this.ResumeAfterOptionDialog);
                         break;
                     default:
 
@@ -67,6 +67,9 @@
             if (message.Text.ToLower().Contains("back"))
             {
                 context.Fail(new FormCanceledException("exit", null));
+            }else if (message.Text.ToLower().Contains("show"))
+            {
+                context.PostAsync($"This is Category Dialog");
             }
             else
             {

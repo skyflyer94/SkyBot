@@ -18,7 +18,9 @@ namespace MultiDialogsBot.Dialogs
     [Serializable]
     //[QnAMakerService("69e1cbed729b4fa8ac00cf5bd5570381", "8d239e7e-307d-4263-bb60-711373732ab8")]
     public class QnADialog : QnAMakerDialog<object> {
-        public QnADialog(string id, string key){
+        private string name;
+        public QnADialog(string name,string id, string key){
+            this.name = name;
             this.KnowledgeBaseId = id;
             this.SubscriptionKey = key;
         }
@@ -28,6 +30,9 @@ namespace MultiDialogsBot.Dialogs
             if (originalQueryText.ToLower().Contains("back"))
             {
                 context.Fail(new FormCanceledException("exit from faq", null));
+            }else if (originalQueryText.ToLower().Contains("show"))
+            {
+                await context.PostAsync($"This is {this.name} Dialog");
             }
             else
             {
