@@ -69,7 +69,8 @@
                 context.Fail(new FormCanceledException("exit", null));
             }else if (message.Text.ToLower().Contains("show"))
             {
-                context.PostAsync($"This is Category Dialog");
+                await context.PostAsync($"This is Category Dialog");
+                this.ShowOptions(context);
             }
             else
             {
