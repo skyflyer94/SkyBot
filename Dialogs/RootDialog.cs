@@ -29,8 +29,8 @@
                 await context.Forward(new SupportDialog(), this.ResumeAfterSupportDialog, message, CancellationToken.None);
             }
             else if (message.Text.ToLower().Contains("qna")){
-                await context.PostAsync($"Hi, feel free to ask a question =)");
-                context.Call(new QnADialog(), this.AfterQnADialog);
+                //await context.PostAsync($"Hi, feel free to ask a question =)");
+                context.Call(new RedirectDialog(), this.AfterQnADialog);
             }
             else{
                 this.ShowOptions(context);
@@ -60,7 +60,7 @@
                         break;
                     case OptionList.FAQ:
                         await context.PostAsync($"Hi, Feel free to ask a question!");
-                        context.Call(new QnADialog(), this.AfterQnADialog);
+                        context.Call(new RedirectDialog(), this.AfterQnADialog);
                         break;
                     default:
 

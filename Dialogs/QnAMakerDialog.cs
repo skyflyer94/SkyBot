@@ -16,8 +16,12 @@ using QnAMakerDialog;
 namespace MultiDialogsBot.Dialogs
 {
     [Serializable]
-    [QnAMakerService("69e1cbed729b4fa8ac00cf5bd5570381", "8d239e7e-307d-4263-bb60-711373732ab8")]
+    //[QnAMakerService("69e1cbed729b4fa8ac00cf5bd5570381", "8d239e7e-307d-4263-bb60-711373732ab8")]
     public class QnADialog : QnAMakerDialog<object> {
+        public QnADialog(string id, string key){
+            this.KnowledgeBaseId = id;
+            this.SubscriptionKey = key;
+        }
 
         public override async Task NoMatchHandler(IDialogContext context, string originalQueryText)
         {
