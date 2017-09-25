@@ -12,7 +12,7 @@
     public class RootDialog : IDialog<object>
     {
 
-        private enum OptionList { Flights = 1, Hotels, FAQ };
+        private enum OptionList { Flights = 1, Hotels, FAQ, LUIS };
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -69,6 +69,10 @@
                     case OptionList.FAQ:
                         await context.PostAsync($"Hi, Feel free to ask a question!");
                         context.Call(new RedirectDialog(), this.AfterQnADialog);
+                        break;
+                    case OptionList.LUIS:
+                        await context.PostAsync($"Hi, Feel free to say something!");
+                        context.Call(new LuisDialog(), this.AfterQnADialog);
                         break;
                     default:
 
